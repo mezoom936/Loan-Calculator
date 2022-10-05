@@ -1,0 +1,89 @@
+package loan;
+
+import java.text.DecimalFormat;
+import java.util.Random;
+
+public class Loan<E extends Comparable<E>>{
+	// Data fields
+	private double interestRate;
+	private double loanAmount;
+	private int numYears;
+	private E[] data;
+	// Default Constructor
+	public Loan()
+	{
+		this.interestRate = 0.0;
+		this.loanAmount = 0.0;
+		this.numYears = 0;
+	}
+	// Constructor with parameters
+	public Loan(double loanAmount, double interestRate, int numYears) 
+	{
+		this.loanAmount = loanAmount;
+		this.interestRate = interestRate;
+		this.numYears = numYears;
+	}
+	
+	// setters and getters for data fields
+	public void setLoanAmount(double loanAmount)
+	{
+		this.loanAmount = loanAmount;
+	}
+	public void setInterestRate(double interestRate)
+	{
+		this.interestRate = interestRate;
+	}
+	public void setNumYears(int numYears)
+	{
+		this.numYears = numYears;
+	}
+	public double getLoanAmount()
+	{
+		return this.loanAmount;
+	}
+	public double getInterestRate()
+	{
+		return this.interestRate;
+	}
+	public int getNumYears()
+	{
+		return this.numYears;
+	}
+	
+	// calculating the monthly payment for your loan
+	public double getMonthlyPayment()
+	{
+		double monthlyRate = this.interestRate / 1200;
+		double monthlyPayment = this.loanAmount * monthlyRate / (1 -	(1 / Math.pow(1 + monthlyRate, this.numYears * 12)));
+		return monthlyPayment;
+	}
+	// calculating the total amount after x years
+	public double getTotal()
+	{
+		double total = this.getMonthlyPayment() * numYears * 12;
+		return total;
+	}
+	// method to calculate the total compound interest loan
+	public double getCompoundTotal()
+	{
+		double monthlyRate = this.interestRate / 1200;
+		double total = this.loanAmount * (Math.pow((1 + monthlyRate), this.numYears * 12));
+		return total;
+	}
+	// method to calculate the monthly payments of compound interest
+	public double getMonthlyCompound()
+	{
+		double monthlyPayment = getCompoundTotal() / (12 * this.numYears);
+		return monthlyPayment;
+	}
+	// toString method to print a representation of the class
+	 @Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("Loan Amount: \t" + this.loanAmount);
+		sb.append("\nAnnual Interest Rate: \t" + this.interestRate);
+		sb.append("\nNumber Of Years: \t" + this.numYears);
+		return sb.toString();	
+	}
+}
