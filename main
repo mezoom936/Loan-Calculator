@@ -1,0 +1,78 @@
+package loan;
+
+import java.text.DecimalFormat;
+import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+public abstract class main extends javafx.application.Application {
+
+	public static void main(String[] args)
+	{	
+		// creating an instance of a DecimalFormat 
+		// class to round the value by 2 decimal places
+		final DecimalFormat df = new DecimalFormat("0.00");
+		Loan l1 = prompt(); // calling the prompt method 
+		System.out.println(l1);	// printing the info by calling the toString method from the loan class
+		// printing the monthly payment by calling the monthly payment method
+		System.out.println("Monthly payment: " + df.format(l1.getMonthlyPayment()));
+		// printing the total by calling the total method
+		System.out.println("Total amount after " + l1.getNumYears() + " years: " + df.format(l1.getTotal()));	
+	}		
+	/**
+	 * method to prompt the user for entering 
+	 * the values for the loan amount, interest rate,
+	 * and the number of years to calculate the loan
+	 * @return a loan object
+	 */
+	public static Loan prompt()
+	{
+		// boolean variable to stop the loop
+		boolean askAgain = true;
+		// three variables to initialize the 
+		// data fields
+		double loanAmount = 0;
+		double annualInterestRate = 0;
+		int numYears = 0;
+		// scanner object to prompt the user
+		Scanner in = new Scanner(System.in);
+		// loop embedded with a try catch to keep prompting the user 
+		// if the input does not match the requested prompt
+		do 
+		{
+			try
+			{		
+				System.out.println("Enter Loan Amount: ");
+				loanAmount = in.nextDouble();
+				System.out.println("\nEnter Annual Interest Rate: ");
+				annualInterestRate = in.nextDouble();
+				System.out.println("\nNumber Of Years: ");
+				numYears = in.nextInt();
+				askAgain = false; // ending the loop by assigning the boolean to false
+			}
+			catch(InputMismatchException ex)
+			{
+				System.out.println("Error, input was not a number");
+				in.nextLine(); // clear the input buffer
+			}
+					
+		}while(askAgain);
+		// creating a loan object 
+		Loan l = new Loan(loanAmount, annualInterestRate, numYears);
+		return l;
+	}	
+
+}
+
